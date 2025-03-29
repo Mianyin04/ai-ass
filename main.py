@@ -64,7 +64,7 @@ filtered_num_cores = sorted(
         (laptop_data2["brand"] == selected_brand) & 
         (laptop_data2["processor_brand"] == selected_processor_brand) & 
         (laptop_data2["processor_tier"] == selected_processor_tier)
-    ]["num_cores"].unique().tolist(), reverse=True
+    ]["num_cores"].unique().tolist()
 )
 selected_num_cores = st.sidebar.selectbox("Select Number of Cores", filtered_num_cores)
 
@@ -75,7 +75,7 @@ filtered_num_threads = sorted(
         (laptop_data2["processor_brand"] == selected_processor_brand) & 
         (laptop_data2["processor_tier"] == selected_processor_tier) & 
         (laptop_data2["num_cores"] == selected_num_cores)
-    ]["num_threads"].unique().tolist(), reverse=True
+    ]["num_threads"].unique().tolist()
 )
 selected_num_threads = st.sidebar.selectbox("Select Number of Threads", filtered_num_threads)
 
@@ -85,7 +85,7 @@ filtered_ram_memory = sorted(
         (laptop_data2["brand"] == selected_brand) & 
         (laptop_data2["processor_brand"] == selected_processor_brand) & 
         (laptop_data2["processor_tier"] == selected_processor_tier)
-    ]["ram_memory"].unique().tolist(), reverse=True
+    ]["ram_memory"].unique().tolist()
 )
 selected_ram_memory = st.sidebar.selectbox("Select RAM Memory", filtered_ram_memory)
 
@@ -103,7 +103,7 @@ filtered_gpu_types = sorted(
 selected_gpu_type = st.sidebar.selectbox("Select GPU Type", filtered_gpu_types)
 
 # Filter Display Size Based on Brand Selection
-filtered_display_sizes = sorted(laptop_data2[laptop_data2["brand"] == selected_brand]["display_size"].unique().tolist(), reverse=True)
+filtered_display_sizes = sorted(laptop_data2[laptop_data2["brand"] == selected_brand]["display_size"].unique().tolist())
 selected_display_size = st.sidebar.selectbox("Select Display Size", filtered_display_sizes)
 
 # Filter Resolution Width Based on Display Size Selection
@@ -111,7 +111,7 @@ filtered_resolution_widths = sorted(
     laptop_data2[
         (laptop_data2["brand"] == selected_brand) & 
         (laptop_data2["display_size"] == selected_display_size)
-    ]["resolution_width"].unique().tolist(), reverse=True
+    ]["resolution_width"].unique().tolist()
 )
 selected_resolution_width = st.sidebar.selectbox("Select Resolution Width", filtered_resolution_widths)
 
@@ -121,7 +121,7 @@ filtered_resolution_heights = sorted(
         (laptop_data2["brand"] == selected_brand) & 
         (laptop_data2["display_size"] == selected_display_size) & 
         (laptop_data2["resolution_width"] == selected_resolution_width)
-    ]["resolution_height"].unique().tolist(), reverse=True
+    ]["resolution_height"].unique().tolist()
 )
 selected_resolution_height = st.sidebar.selectbox("Select Resolution Height", filtered_resolution_heights)
 
