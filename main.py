@@ -28,12 +28,12 @@ label_encoders = model_data["label_encoders"]
 features = model_data["features"]
 
 # Define possible values
-possible_display_sizes = ["13.3", "14.0", "15.6", "16.0", "17.3"]
-possible_resolution_widths = ["1366", "1920", "2560", "3840"]
-possible_resolution_heights = ["768", "1080", "1440", "2160"]
-possible_num_cores = list(range(2, 17, 2))
-possible_num_threads = list(range(2, 17, 2))
-possible_ram_memory = list(range(4, 33, 4))
+# possible_display_sizes = ["13.3", "14.0", "15.6", "16.0", "17.3"]
+# possible_resolution_widths = ["1366", "1920", "2560", "3840"]
+# possible_resolution_heights = ["768", "1080", "1440", "2160"]
+# possible_num_cores = list(range(2, 17, 2))
+# possible_num_threads = list(range(2, 17, 2))
+# possible_ram_memory = list(range(4, 33, 4))
 
 # Sidebar Inputs
 st.sidebar.title("Laptop Recommendation System")
@@ -49,28 +49,86 @@ selected_brand = st.sidebar.selectbox("Select Brand", brand_options)
 filtered_processor_brands = laptop_data2[laptop_data2["brand"] == selected_brand]["processor_brand"].unique().tolist()
 selected_processor_brand = st.sidebar.selectbox("Select Processor Brand", filtered_processor_brands)
 
-user_input["processor_brand"] = selected_processor_brand
+filtered_processor_tiers = laptop_data2[
+    (laptop_data2["brand"] == selected_brand) & 
+    (laptop_data2["processor_brand"] == selected_processor_brand)
+]["processor_tier"].unique().tolist()
+selected_processor_tier = st.sidebar.selectbox("Select Processor Tier", filtered_processor_tiers)
 
-for feature in features:
-    if feature in ["brand", "processor_brand"]:
-        continue  # Skip brand and processor_brand since they're already handled
-    if feature in label_encoders:
-        options = list(label_encoders[feature].classes_)
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", options)
-    elif feature == "display_size":
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", possible_display_sizes)
-    elif feature == "resolution_width":
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", possible_resolution_widths)
-    elif feature == "resolution_height":
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", possible_resolution_heights)
-    elif feature == "num_cores":
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", possible_num_cores)
-    elif feature == "num_threads":
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", possible_num_threads)
-    elif feature == "ram_memory":
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", possible_ram_memory)
-    else:
-        user_input[feature] = st.sidebar.selectbox(f"Select {feature}", list(range(1, 17)))
+# Filter Number of Cores Based on Processor Tier Selection
+filtered_num_cores = laptop_data2[
+    (laptop_data2["brand"] == selected_brand) & 
+    (laptop_data2["processor_brand"] == selected_processor_brand) & 
+    (laptop_data2["processor_tier"] == selected_processor_tier)
+]["num_cores"].unique().tolist()
+selected_num_cores = st.sidebar.selectbox("Select Number of Cores", filtered_num_cores)
+
+# Filter Number of Threads Based on Cores Selection
+filtered_num_threads = laptop_data2[
+    (laptop_data2["brand"] == selected_brand) & 
+    (laptop_data2["processor_brand"] == selected_processor_brand) & 
+    (laptop_data2["processor_tier"] == selected_processor_tier) & 
+    (laptop_data2["num_cores"] == selected_num_cores)
+]["num_threads"].unique().tolist()
+selected_num_threads = st.sidebar.selectbox("Select Number of Threads", filtered_num_threads)
+
+# Filter RAM Memory Based on Processor Selection
+filtered_ram_memory = laptop_data2[
+    (laptop_data2["brand"] == selected_brand) & 
+    (laptop_data2["processor_brand"] == selected_processor_brand) & 
+    (laptop_data2["processor_tier"] == selected_processor_tier)
+]["ram_memory"].unique().tolist()
+selected_ram_memory = st.sidebar.selectbox("Select RAM Memory", filtered_ram_memory)
+
+# Filter GPU Brand Based on Brand Selection
+filtered_gpu_brands = laptop_data2[laptop_data2["brand"] == selected_brand]["gpu_brand"].unique().tolist()
+selected_gpu_brand = st.sidebar.selectbox("Select GPU Brand", filtered_gpu_brands)
+
+# Filter GPU Type Based on GPU Brand Selection
+filtered_gpu_types = laptop_data2[
+    (laptop_data2["brand"] == selected_brand) & 
+    (laptop_data2["gpu_brand"] == selected_gpu_brand)
+]["gpu_type"].unique().tolist()
+selected_gpu_type = st.sidebar.selectbox("Select GPU Type", filtered_gpu_types)
+
+# Filter Display Size Based on Brand Selection
+filtered_display_sizes = laptop_data2[laptop_data2["brand"] == selected_brand]["display_size"].unique().tolist()
+selected_display_size = st.sidebar.selectbox("Select Display Size", filtered_display_sizes)
+
+# Filter Resolution Width Based on Display Size Selection
+filtered_resolution_widths = laptop_data2[
+    (laptop_data2["brand"] == selected_brand) & 
+    (laptop_data2["display_size"] == selected_display_size)
+]["resolution_width"].unique().tolist()
+selected_resolution_width = st.sidebar.selectbox("Select Resolution Width", filtered_resolution_widths)
+
+# Filter Resolution Height Based on Width Selection
+filtered_resolution_heights = laptop_data2[
+    (laptop_data2["brand"] == selected_brand) & 
+    (laptop_data2["display_size"] == selected_display_size) & 
+    (laptop_data2["resolution_width"] == selected_resolution_width)
+]["resolution_height"].unique().tolist()
+selected_resolution_height = st.sidebar.selectbox("Select Resolution Height", filtered_resolution_heights)
+
+# Filter OS Based on Brand Selection
+filtered_os = laptop_data2[laptop_data2["brand"] == selected_brand]["OS"].unique().tolist()
+selected_os = st.sidebar.selectbox("Select Operating System", filtered_os)
+
+# Store user input
+user_input.update({
+    "brand": selected_brand,
+    "processor_brand": selected_processor_brand,
+    "processor_tier": selected_processor_tier,
+    "num_cores": selected_num_cores,
+    "num_threads": selected_num_threads,
+    "ram_memory": selected_ram_memory,
+    "gpu_brand": selected_gpu_brand,
+    "gpu_type": selected_gpu_type,
+    "display_size": selected_display_size,
+    "resolution_width": selected_resolution_width,
+    "resolution_height": selected_resolution_height,
+    "OS": selected_os
+})
 
 predict_button = st.sidebar.button("Get Recommendation")
 
