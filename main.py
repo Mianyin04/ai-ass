@@ -42,76 +42,91 @@ st.sidebar.write("Enter your preferences and click below!")
 user_input = {}
 
 # Select Brand First
-brand_options = laptop_data2["brand"].unique().tolist()
+brand_options = sorted(laptop_data2["brand"].unique().tolist())
 selected_brand = st.sidebar.selectbox("Select Brand", brand_options)
 
 # Filter processor brands dynamically
-filtered_processor_brands = laptop_data2[laptop_data2["brand"] == selected_brand]["processor_brand"].unique().tolist()
+filtered_processor_brands = sorted(laptop_data2[laptop_data2["brand"] == selected_brand]["processor_brand"].unique().tolist())
 selected_processor_brand = st.sidebar.selectbox("Select Processor Brand", filtered_processor_brands)
 
-filtered_processor_tiers = laptop_data2[
-    (laptop_data2["brand"] == selected_brand) & 
-    (laptop_data2["processor_brand"] == selected_processor_brand)
-]["processor_tier"].unique().tolist()
+filtered_processor_tiers = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["processor_brand"] == selected_processor_brand)
+    ]["processor_tier"].unique().tolist(),
+    key=lambda x: [int(s) if s.isdigit() else s for s in x.split()]
+)
 selected_processor_tier = st.sidebar.selectbox("Select Processor Tier", filtered_processor_tiers)
 
 # Filter Number of Cores Based on Processor Tier Selection
-filtered_num_cores = laptop_data2[
-    (laptop_data2["brand"] == selected_brand) & 
-    (laptop_data2["processor_brand"] == selected_processor_brand) & 
-    (laptop_data2["processor_tier"] == selected_processor_tier)
-]["num_cores"].unique().tolist()
+filtered_num_cores = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["processor_brand"] == selected_processor_brand) & 
+        (laptop_data2["processor_tier"] == selected_processor_tier)
+    ]["num_cores"].unique().tolist(), reverse=True
+)
 selected_num_cores = st.sidebar.selectbox("Select Number of Cores", filtered_num_cores)
 
 # Filter Number of Threads Based on Cores Selection
-filtered_num_threads = laptop_data2[
-    (laptop_data2["brand"] == selected_brand) & 
-    (laptop_data2["processor_brand"] == selected_processor_brand) & 
-    (laptop_data2["processor_tier"] == selected_processor_tier) & 
-    (laptop_data2["num_cores"] == selected_num_cores)
-]["num_threads"].unique().tolist()
+filtered_num_threads = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["processor_brand"] == selected_processor_brand) & 
+        (laptop_data2["processor_tier"] == selected_processor_tier) & 
+        (laptop_data2["num_cores"] == selected_num_cores)
+    ]["num_threads"].unique().tolist(), reverse=True
+)
 selected_num_threads = st.sidebar.selectbox("Select Number of Threads", filtered_num_threads)
 
 # Filter RAM Memory Based on Processor Selection
-filtered_ram_memory = laptop_data2[
-    (laptop_data2["brand"] == selected_brand) & 
-    (laptop_data2["processor_brand"] == selected_processor_brand) & 
-    (laptop_data2["processor_tier"] == selected_processor_tier)
-]["ram_memory"].unique().tolist()
+filtered_ram_memory = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["processor_brand"] == selected_processor_brand) & 
+        (laptop_data2["processor_tier"] == selected_processor_tier)
+    ]["ram_memory"].unique().tolist(), reverse=True
+)
 selected_ram_memory = st.sidebar.selectbox("Select RAM Memory", filtered_ram_memory)
 
 # Filter GPU Brand Based on Brand Selection
-filtered_gpu_brands = laptop_data2[laptop_data2["brand"] == selected_brand]["gpu_brand"].unique().tolist()
+filtered_gpu_brands = sorted(laptop_data2[laptop_data2["brand"] == selected_brand]["gpu_brand"].unique().tolist())
 selected_gpu_brand = st.sidebar.selectbox("Select GPU Brand", filtered_gpu_brands)
 
 # Filter GPU Type Based on GPU Brand Selection
-filtered_gpu_types = laptop_data2[
-    (laptop_data2["brand"] == selected_brand) & 
-    (laptop_data2["gpu_brand"] == selected_gpu_brand)
-]["gpu_type"].unique().tolist()
+filtered_gpu_types = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["gpu_brand"] == selected_gpu_brand)
+    ]["gpu_type"].unique().tolist()
+)
 selected_gpu_type = st.sidebar.selectbox("Select GPU Type", filtered_gpu_types)
 
 # Filter Display Size Based on Brand Selection
-filtered_display_sizes = laptop_data2[laptop_data2["brand"] == selected_brand]["display_size"].unique().tolist()
+filtered_display_sizes = sorted(laptop_data2[laptop_data2["brand"] == selected_brand]["display_size"].unique().tolist(), reverse=True)
 selected_display_size = st.sidebar.selectbox("Select Display Size", filtered_display_sizes)
 
 # Filter Resolution Width Based on Display Size Selection
-filtered_resolution_widths = laptop_data2[
-    (laptop_data2["brand"] == selected_brand) & 
-    (laptop_data2["display_size"] == selected_display_size)
-]["resolution_width"].unique().tolist()
+filtered_resolution_widths = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["display_size"] == selected_display_size)
+    ]["resolution_width"].unique().tolist(), reverse=True
+)
 selected_resolution_width = st.sidebar.selectbox("Select Resolution Width", filtered_resolution_widths)
 
 # Filter Resolution Height Based on Width Selection
-filtered_resolution_heights = laptop_data2[
-    (laptop_data2["brand"] == selected_brand) & 
-    (laptop_data2["display_size"] == selected_display_size) & 
-    (laptop_data2["resolution_width"] == selected_resolution_width)
-]["resolution_height"].unique().tolist()
+filtered_resolution_heights = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["display_size"] == selected_display_size) & 
+        (laptop_data2["resolution_width"] == selected_resolution_width)
+    ]["resolution_height"].unique().tolist(), reverse=True
+)
 selected_resolution_height = st.sidebar.selectbox("Select Resolution Height", filtered_resolution_heights)
 
 # Filter OS Based on Brand Selection
-filtered_os = laptop_data2[laptop_data2["brand"] == selected_brand]["OS"].unique().tolist()
+filtered_os = sorted(laptop_data2[laptop_data2["brand"] == selected_brand]["OS"].unique().tolist())
 selected_os = st.sidebar.selectbox("Select Operating System", filtered_os)
 
 # Store user input
