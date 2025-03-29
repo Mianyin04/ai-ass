@@ -39,7 +39,19 @@ st.sidebar.title("Laptop Recommendation System")
 st.sidebar.write("Enter your preferences and click below!")
 
 user_input = {}
+
+# Select Brand First
+brand_options = laptop_data["brand"].unique().tolist()
+selected_brand = st.sidebar.selectbox("Select Brand", brand_options)
+user_input["brand"] = selected_brand
+
+filtered_processor_brands = laptop_data[laptop_data["brand"] == selected_brand]["processor_brand"].unique().tolist()
+selected_processor_brand = st.sidebar.selectbox("Select Processor Brand", filtered_processor_brands)
+user_input["processor_brand"] = selected_processor_brand
+
 for feature in features:
+    if feature in ["brand", "processor_brand"]:
+        continue  # Skip brand and processor_brand since they're already handled
     if feature in label_encoders:
         options = list(label_encoders[feature].classes_)
         user_input[feature] = st.sidebar.selectbox(f"Select {feature}", options)
