@@ -11,6 +11,7 @@ model_option = st.sidebar.selectbox("Select Recommendation Approach", [
 ])
 
 laptop_data = pd.read_csv("laptops_updated.csv")
+laptop_data2 = pd.read_csv("laptops.csv")
 
 # Load corresponding model file
 if model_option == "Approach 1: Random Forest":
@@ -40,19 +41,12 @@ st.sidebar.write("Enter your preferences and click below!")
 
 user_input = {}
 
-# Load and preprocess brand and processor brand
-brand_mapping = {0: "Acer", 10: "HP", 14: "Lenovo", 21: "Tecno"}  # Example mappings, adjust accordingly
-processor_mapping = {0: "AMD", 2: "Intel", 3: "Apple"}  # Example mappings, adjust accordingly
-
-laptop_data["brand"] = laptop_data["brand"].map(brand_mapping)
-laptop_data["processor_brand"] = laptop_data["processor_brand"].map(processor_mapping)
-
 # Select Brand First
-brand_options = laptop_data["brand"].dropna().unique().tolist()
+brand_options = laptop_data["brand"].unique().tolist()
 selected_brand = st.sidebar.selectbox("Select Brand", brand_options)
 
 # Filter processor brands dynamically
-filtered_processor_brands = laptop_data[laptop_data["brand"] == selected_brand]["processor_brand"].dropna().unique().tolist()
+filtered_processor_brands = laptop_data2[laptop_data2["brand"] == selected_brand]["processor_brand"].unique().tolist()
 selected_processor_brand = st.sidebar.selectbox("Select Processor Brand", filtered_processor_brands)
 
 user_input["processor_brand"] = selected_processor_brand
