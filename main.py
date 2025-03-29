@@ -46,7 +46,7 @@ brand_options = laptop_data["brand"].unique().tolist()
 selected_brand = st.sidebar.selectbox("Select Brand", brand_options)
 
 # Filter processor brands dynamically
-filtered_processor_brands = laptop_data2[laptop_data2["brand"] == selected_brand]["processor_brand"].unique().tolist()
+filtered_processor_brands = laptop_data2[laptop_data["brand"] == selected_brand]["processor_brand"].unique().tolist()
 selected_processor_brand = st.sidebar.selectbox("Select Processor Brand", filtered_processor_brands)
 
 user_input["processor_brand"] = selected_processor_brand
