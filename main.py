@@ -96,15 +96,16 @@ filtered_gpu_brands = sorted(laptop_data2[laptop_data2["brand"] == selected_bran
 selected_gpu_brand = st.sidebar.selectbox("Select GPU Brand", filtered_gpu_brands)
 
 # Filter GPU Type Based on GPU Brand Selection
-filtered_gpu_brands = sorted(
+filtered_gpu_types = sorted(
     laptop_data2[
         (laptop_data2["brand"] == selected_brand) & 
         (laptop_data2["processor_brand"] == selected_processor_brand) & 
         (laptop_data2["processor_tier"] == selected_processor_tier) & 
         (laptop_data2["num_cores"] == selected_num_cores) & 
         (laptop_data2["num_threads"] == selected_num_threads) & 
-        (laptop_data2["ram_memory"] == selected_ram_memory)
-    ]["gpu_brand"].unique().tolist()
+        (laptop_data2["ram_memory"] == selected_ram_memory) & 
+        (laptop_data2["gpu_brand"] == selected_gpu_brand)
+    ]["gpu_type"].unique().tolist()
 )
 selected_gpu_type = st.sidebar.selectbox("Select GPU Type", filtered_gpu_types)
 
