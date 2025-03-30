@@ -84,7 +84,7 @@ filtered_ram_memory = sorted(
     laptop_data2[
         (laptop_data2["brand"] == selected_brand) & 
         (laptop_data2["processor_brand"] == selected_processor_brand) & 
-        (laptop_data2["processor_tier"] == selected_processor_tier)
+        (laptop_data2["processor_tier"] == selected_processor_tier) &
         (laptop_data2["num_cores"] == selected_num_cores) & 
         (laptop_data2["num_threads"] == selected_num_threads)
     ]["ram_memory"].unique().tolist()
