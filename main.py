@@ -120,8 +120,7 @@ filtered_display_sizes = sorted(
         (laptop_data2["ram_memory"] == selected_ram_memory) & 
         (laptop_data2["gpu_brand"] == selected_gpu_brand) & 
         (laptop_data2["gpu_type"] == selected_gpu_type)
-    ]["display_size"].unique().tolist(),
-    reverse=True
+    ]["display_size"].unique().tolist()
 )
 selected_display_size = st.sidebar.selectbox("Select Display Size", filtered_display_sizes)
 
