@@ -45,11 +45,18 @@ user_input = {}
 brand_options = sorted(laptop_data2["brand"].unique().tolist())
 selected_brand = st.sidebar.selectbox("Select Brand", brand_options)
 
+filtered_processor_tiers = sorted(
+    laptop_data2[
+        (laptop_data2["brand"] == selected_brand) & 
+        (laptop_data2["processor_brand"] == selected_processor_brand)
+    ]["processor_tier"].dropna().unique().tolist()
+)
+
 def get_filtered_options(column_name):
     return sorted(laptop_data2[laptop_data2["brand"] == selected_brand][column_name].dropna().unique().tolist())
 
 selected_processor_brand = st.sidebar.selectbox("Select Processor Brand", get_filtered_options("processor_brand"))
-selected_processor_tier = st.sidebar.selectbox("Select Processor Tier", get_filtered_options("processor_tier"))
+selected_processor_tier = st.sidebar.selectbox("Select Processor Tier", filtered_processor_tiers)
 selected_num_cores = st.sidebar.selectbox("Select Number of Cores", get_filtered_options("num_cores"))
 selected_num_threads = st.sidebar.selectbox("Select Number of Threads", get_filtered_options("num_threads"))
 selected_ram_memory = st.sidebar.selectbox("Select RAM Memory", get_filtered_options("ram_memory"))
