@@ -152,7 +152,7 @@ if predict_button:
         
         st.subheader("Recommendation Results:")
         st.write(f"Predicted Laptop Category: {category_name}")
-        st.write(f"Estimated Laptop Price: ${myr_price:.2f}")
+        st.write(f"Estimated Laptop Price: RM{myr_price:.2f}")
 
         # Filter laptops based on predicted category AND price range
         price_lower = usd_price - (500 / conversion_rate)
